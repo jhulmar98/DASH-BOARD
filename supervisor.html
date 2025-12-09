@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard de Supervisores</title>
+    <div id="loadingOverlay">
+    
+
+
+    <link rel="stylesheet" href="./css/supervisor.css" />
+
+    <!-- Librerías -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+
+<header class="top-header">
+      <button onclick="window.location.href='index.html'" class="btn-regresar">
+    ⬅ Regresar
+    </button>
+    <div class="titulo">COMPORTAMIENTO DE SUPERVISORES</div>
+
+    <div class="controls">
+        <label style="color:white;font-weight:bold;">Mes:</label>
+        <select id="selectMes"></select>
+
+        <button class="btn-export" id="btnPng">Exportar PNG</button>
+        <button class="btn-export" id="btnPdf">Exportar PDF</button>
+    </div>
+</header>
+
+<div class="contenedor">
+
+    <!-- 1️⃣ Ranking Supervisores -->
+    <div class="card half">
+        <h2>Ranking Supervisores</h2>
+        <div class="chart-box">
+            <canvas id="chartRanking"></canvas>
+        </div>
+    </div>
+
+    <!-- 2️⃣ Ranking Cargos -->
+    <div class="card half">
+        <h2>Ranking de Cargos más Escaneados</h2>
+        <div class="chart-box">
+            <canvas id="chartCargos"></canvas>
+        </div>
+    </div>
+
+    <!-- 3️⃣ Sector x Supervisor -->
+    <!-- 📋 Reporte por Sector -->
+
+    <div class="card full">
+        <h2> Detalle de Escaneos por Sector</h2>
+
+        <!-- Aquí se generará la tabla dinámicamente -->
+        <div id="sectorTableContainer"></div>
+    </div>
+
+
+    <!-- 4️⃣ Evolución -->
+    <div class="card full">
+        <h2> Evolución diaria por Supervisor</h2>
+
+        <div style="padding-bottom:5px; font-size:.85rem;">
+            <label>Supervisor:</label>
+            <select id="supervisorSelect"></select>
+        </div>
+
+        <div class="chart-box">
+            <canvas id="chartEvolucion"></canvas>
+        </div>
+     <div id="exportLoading">Exportando...</div>
+
+
+</div>
+
+<script src="./js/supervisor.js"></script>
+</body>
+</html>
