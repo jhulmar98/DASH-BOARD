@@ -1,7 +1,7 @@
 Chart.register(ChartDataLabels);
 Chart.defaults.devicePixelRatio = Math.min(window.devicePixelRatio, 2);
 
-fetch("../Datos.xlsx")
+fetch("Datos.xlsx")
   .then(res => res.arrayBuffer())
   .then(buffer => {
     const wb = XLSX.read(buffer, { type: "array", cellDates: true });
@@ -222,3 +222,4 @@ document.getElementById("btnPDF").addEventListener("click", () => {
     pdf.save("Reporte-General.pdf");
   });
 });
+
