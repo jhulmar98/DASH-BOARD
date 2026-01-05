@@ -1,0 +1,210 @@
+/* =================================
+   RESET
+================================= */
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:"Segoe UI", Arial, sans-serif;
+}
+
+/* =================================
+   BODY – SCROLL GLOBAL
+================================= */
+body{
+  background:#F7F3E7;
+  color:#2f3b1f;
+  min-height:100vh;
+  overflow-y:auto;
+}
+
+/* =================================
+   HEADER FIJO
+================================= */
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:#55633A;
+  color:#fff;
+  padding:12px 18px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:16px;
+}
+
+.header h1{
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:.4px;
+}
+
+/* =================================
+   BOTONES HEADER
+================================= */
+.btn-regresar{
+  background:#3E4A2A;
+  border:none;
+  color:#fff;
+  padding:8px 14px;
+  border-radius:6px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btn-regresar:hover{
+  background:#2f3920;
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.header-actions label{
+  font-weight:700;
+}
+
+.header-actions select{
+  padding:6px 10px;
+  border-radius:6px;
+  border:none;
+  font-weight:600;
+}
+
+.header-actions button{
+  padding:7px 12px;
+  border-radius:6px;
+  border:none;
+  font-weight:700;
+  background:#fff;
+  color:#3E4A2A;
+  cursor:pointer;
+}
+
+.header-actions button:hover{
+  background:#eae7da;
+}
+
+/* =================================
+   DASHBOARD GRID
+================================= */
+.dashboard{
+  padding:16px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+/* =================================
+   CARDS
+================================= */
+.card{
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
+  display:flex;
+  flex-direction:column;
+}
+
+.card h2{
+  text-align:center;
+  font-size:15px;
+  font-weight:900;
+  margin-bottom:10px;
+  color:#55633A;
+}
+
+.card.full{
+  grid-column:1 / -1;
+}
+
+/* =================================
+   CONTENEDOR DE GRÁFICOS (CLAVE)
+================================= */
+.chart-box{
+  position:relative;
+  width:100%;
+  height:clamp(320px, 55vh, 520px);
+}
+
+/* =================================
+   CANVAS (CORREGIDO)
+================================= */
+canvas{
+  width:100% !important;
+  height:100% !important;
+  display:block;
+}
+
+/* =================================
+   TABLA SECTORES
+================================= */
+#sectorTableContainer{
+  width:100%;
+}
+
+.tabla-sectores{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+.tabla-sectores th{
+  background:#55633A;
+  color:#fff;
+  padding:8px;
+  font-weight:800;
+}
+
+.tabla-sectores td{
+  border:1px solid #ddd;
+  padding:6px;
+  text-align:center;
+}
+
+.tabla-sectores tr:nth-child(even){
+  background:#F7F5EE;
+}
+
+/* =================================
+   EVOLUCIÓN
+================================= */
+.evolucion-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.evolucion-header select{
+  padding:6px 10px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  font-weight:600;
+}
+
+/* =================================
+   RESPONSIVE
+================================= */
+@media(max-width:1200px){
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:768px){
+  .header{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+
+  .header-actions{
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+}

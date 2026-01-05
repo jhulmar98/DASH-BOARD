@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>REPORTE GENERAL</title>
+
+<link rel="stylesheet" href="../css serenos/torta.css">
+<div class="export-buttons">
+    <button id="btnPNG">Exportar PNG</button>
+    <button id="btnPDF">Exportar PDF</button>
+</div>
+
+<!-- Librerías -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body>
+    <button onclick="window.location.href='../index.html'" class="btn-regresar">
+    ⬅ Regresar
+    </button>
+
+
+<h1>REPORTE GENERAL</h1>
+
+<div class="main">
+
+    <!-- 🥧 PERSONAL POR MES -->
+    <section class="card-like pieBox">
+        <h2>PERSONAL POR MES</h2>
+        <div class="pieContent">
+            <canvas id="graficoTorta"></canvas>
+            <div class="legendBox"></div>
+        </div>
+    </section>
+
+    <!-- 📊 PERSONAL POR SECTOR -->
+    <section class="card-like barBox">
+        <h2>PERSONAL POR SECTOR</h2>
+        <canvas id="graficoSector"></canvas>
+    </section>
+
+    <!-- 📈 EVOLUCIÓN -->
+    <section class="card-like lineBox">
+        <h2>TENDENCIA MENSUAL DEL PERSONAL</h2>
+        <canvas id="graficoLinea"></canvas>
+    </section>
+
+</div>
+
+<script type="module" src="../js-serenos/torta.js"></script>
+</body>
+</html>

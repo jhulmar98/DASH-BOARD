@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comportamiento de Escaneo en el Tiempo - Locales</title>
+
+    <!-- LIBRERÍAS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- ESTILOS -->
+    <link rel="stylesheet" href="../css locales/tiempo.css">
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="top-header">
+    <button onclick="window.location.href='../index.html'" class="btn-regresar">
+        ⬅ Regresar
+    </button>
+
+    <h1 class="titulo">COMPORTAMIENTO DE ESCANEO EN EL TIEMPO – LOCALES</h1>
+
+    <div class="controls">
+        <select id="selectMes" class="select-mes">
+            <option disabled selected>Mes...</option>
+        </select>
+
+        <button id="btnPNG" class="btn-export">Exportar PNG</button>
+        <button id="btnPDF" class="btn-export">Exportar PDF</button>
+    </div>
+</header>
+
+<!-- ================= ERRORES ================= -->
+<div id="errorBox" class="error-box hidden"></div>
+
+<!-- ================= DASHBOARD ================= -->
+<main class="contenedor">
+
+    <!-- 1️⃣ Día del mes -->
+    <section class="card full">
+        <h2>TENDENCIA MENSUAL DE LOCALES</h2>
+        <canvas id="chartDiaMes"></canvas>
+        <p class="total">Total: <span id="totalDiaMes">0</span></p>
+    </section>
+
+    <!-- 2️⃣ Horario -->
+    <section class="card full">
+        <h2>HORARIO (00–23H)</h2>
+        <canvas id="chartHorario"></canvas>
+    </section>
+
+    <!-- 3️⃣ Día de la semana -->
+    <section class="card half">
+        <h2>DÍA DE LA SEMANA</h2>
+        <canvas id="chartDiaSemana"></canvas>
+    </section>
+
+    <!-- 4️⃣ Sectores -->
+    <section class="card half">
+        <h2>ESCANEOS POR SECTOR</h2>
+        <canvas id="chartSector"></canvas>
+    </section>
+
+</main>
+
+<!-- ================= JS ================= -->
+<script src="../js-locales/tiempo.js"></script>
+
+</body>
+</html>

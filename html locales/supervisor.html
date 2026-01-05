@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>COMPORTAMIENTO DE SUPERVISORES - LOCALES</title>
+
+  <!-- ESTILOS -->
+  <link rel="stylesheet" href="../css locales/supervisor.css">
+
+  <!-- LIBRERÍAS -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="header">
+  <button class="btn-regresar" onclick="window.location.href='../index.html'">
+    ← Regresar
+  </button>
+
+  <h1>COMPORTAMIENTO DE SUPERVISORES</h1>
+
+  <div class="header-actions">
+    <label>Mes:</label>
+    <select id="selectMes"></select>
+    <button id="btnPng">Exportar PNG</button>
+    <button id="btnPdf">Exportar PDF</button>
+  </div>
+</header>
+
+<!-- ================= DASHBOARD ================= -->
+<main class="dashboard">
+
+  <!-- Ranking Supervisores -->
+  <section class="card">
+    <h2>Ranking Supervisores</h2>
+    <div class="chart-box">
+      <canvas id="chartRankingCanvas"></canvas>
+    </div>
+  </section>
+
+  <!-- Ranking Locales -->
+  <section class="card">
+    <h2>Ranking de Locales más Escaneados</h2>
+    <div class="chart-box">
+      <canvas id="chartLocalesCanvas"></canvas>
+    </div>
+  </section>
+
+  <!-- Tabla Sectores -->
+  <section class="card full">
+    <h2>Detalle de Escaneos por Sector</h2>
+    <div id="sectorTableContainer"></div>
+  </section>
+
+  <!-- Evolución -->
+  <section class="card full">
+    <div class="evolucion-header">
+      <h2>Evolución diaria por Supervisor</h2>
+      <select id="supervisorSelect"></select>
+    </div>
+    <div class="chart-box">
+      <canvas id="chartEvolucionCanvas"></canvas>
+    </div>
+  </section>
+
+</main>
+
+<!-- SCRIPT PRINCIPAL -->
+<script src="../js-locales/supervisor.js"></script>
+
+</body>
+</html>

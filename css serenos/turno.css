@@ -1,0 +1,119 @@
+/* === RESET === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background: #F5F3E7;
+    font-family: "Segoe UI", sans-serif;
+    overflow: hidden;
+}
+
+/* === TOP BAR === */
+.top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 15px;
+}
+
+.btn-regresar {
+    background: #3c492c;
+    color: #ffffff;
+    border: none;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn-regresar:hover {
+    background: #51613A;
+}
+
+/* === TITLE (CENTER) === */
+.title-container {
+    flex-grow: 1;
+    text-align: center;
+}
+.title-container h2 {
+    color: #51613A;
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    font-weight: 900;
+}
+
+/* === EXPORT BUTTONS RIGHT === */
+.export-buttons {
+    display: flex;
+    gap: 8px;
+}
+.btnExport {
+    background: #718554;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+.btnExport:hover {
+    background: #364425;
+    transform: scale(1.05);
+}
+
+/* === SELECT FILTER (CENTERED) === */
+.panel {
+    width: 100%;
+    justify-content: center;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.panel label {
+    font-weight: bold;
+    color: #51613A;
+}
+#mesFiltro {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 2px solid #51613A;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* === CHART CONTAINER (RESPONSIVE) === */
+.contenedor-grafico {
+    width: min(95%, 1400px);
+    height: calc(100vh - 125px);
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.12);
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+}
+
+/* === MOBILE === */
+@media (max-width: 900px) {
+    .top-bar {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .export-buttons {
+        justify-content: center;
+    }
+}

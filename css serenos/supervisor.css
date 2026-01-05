@@ -1,0 +1,233 @@
+/* =======================================================
+   🎨 TEMA BEIGE MODERNO PROFESIONAL
+======================================================= */
+:root {
+    --bg:#F8F5E6;
+    --text:#2E2E2E;
+    --title:#51613A;
+    --card:#FFFFFF;
+    --shadow:rgba(0,0,0,.1);
+}
+
+/* =======================================================
+   📌 ESTRUCTURA GLOBAL
+======================================================= */
+html, body {
+    margin:0;
+    padding:0;
+    height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Segoe UI",sans-serif;
+    overflow-y:auto;
+}
+
+body {
+    display:flex;
+    flex-direction:column;
+}
+
+/* =======================================================
+   🔝 HEADER
+======================================================= */
+/* === Header en 3 columnas alineadas === */
+.top-header {
+    background: var(--title);
+    color: #fff;
+    padding: .7rem 1rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto; /* izquierda | centro | derecha */
+    align-items: center;
+    gap: 10px;
+}
+
+
+.titulo {
+    width: 100%;
+    text-align:center;
+    font-weight:900;
+    font-size:1.4rem;
+}
+
+/* Controles (botones y mes) */
+.controls {
+    display:flex;
+    gap:.45rem;
+    margin-left:auto;
+}
+
+.controls button {
+    background:#fff;
+    border:none;
+    padding: .45rem .7rem;
+    cursor:pointer;
+    border-radius:6px;
+    font-size:.75rem;
+    font-weight:bold;
+    color:var(--title);
+    transition:.2s;
+    box-shadow:0 2px 6px var(--shadow);
+}
+
+.controls button:hover {
+    background:#dedabf;
+}
+
+#selectMes {
+    padding: .35rem .6rem;
+    font-size:.78rem;
+    border-radius:6px;
+    border:2px solid #fff;
+    color:var(--title);
+    font-weight:bold;
+}
+
+/* =======================================================
+   📊 CONTENEDOR GRÁFICOS
+======================================================= */
+.contenedor {
+    display:grid;
+    grid-template-columns:repeat(12, 1fr);
+    gap:.7rem;
+    padding:.7rem;
+    height:auto;
+}
+
+.card {
+    background:var(--card);
+    border-radius:10px;
+    padding:.6rem;
+    display:flex;
+    flex-direction:column;
+    gap:.4rem;
+    box-shadow:0 3px 8px var(--shadow);
+}
+
+/* Full & Half */
+.card.full { grid-column:1 / span 12; }
+.card.half { grid-column:span 6; }
+
+/* Títulos */
+.card h2 {
+    font-size:.92rem;
+    font-weight:900;
+    color:var(--title);
+    text-align:center;
+}
+
+/* Canvas */
+canvas {
+    width:100% !important;
+    min-height:280px;
+}
+
+/* =======================================================
+   📋 TABLA SECTOR — Versión PRO
+======================================================= */
+.sector-table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid #d2d0c2;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+}
+
+.tabla-sectores {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Encabezado */
+.tabla-sectores thead th {
+    background: var(--title);
+    color: white;
+    padding: 10px 8px;
+    font-weight: 900;
+    border-bottom: 2px solid #354026;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Celdas */
+.tabla-sectores td {
+    padding: 8px 6px;
+    border: 1px solid #e1dfd4;
+    font-weight: 600;
+}
+
+/* Intercalado visual */
+.tabla-sectores tbody tr:nth-child(even) {
+    background: #f7f6ef;
+}
+
+/* Hover para facilitar análisis */
+.tabla-sectores tbody tr:hover {
+    background: #e9e5d5;
+    transition: .2s;
+}
+
+/* Colores estilo dashboard por sector */
+td.sec-1 { background:#8F503233; }
+td.sec-2 { background:#B0763B33; }
+td.sec-3 { background:#C9B45833; }
+td.sec-4 { background:#8A984833; }
+td.sec-5 { background:#51613A33; }
+td.fz    { background:#8E8E8E33; }
+
+/* Mejor visibilidad de números */
+.tabla-sectores td.num {
+    font-weight: bold;
+    color: #000;
+}
+/* Indicador de Exportación */
+#exportLoading {
+    position: fixed;
+    top: 8px;
+    right: 12px;
+    background: rgba(0,0,0,.75);
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+    z-index: 99999;
+    display: none;
+    font-weight: bold;
+}
+.btn-regresar {
+    padding: 6px 18px; /* ancho más grande */
+}
+/* Responsive */
+@media(max-width:700px){
+    .tabla-sectores td {
+        font-size:0.72rem;
+        padding:6px 4px;
+    }
+}
+
+/* =======================================================
+   📈 SELECT SUPERVISOR
+======================================================= */
+#supervisorSelect {
+    padding: 6px;
+    border-radius: 6px;
+    border:2px solid var(--title);
+    font-size:.82rem;
+    font-weight:bold;
+    color:var(--title);
+}
+
+/* =======================================================
+   📱 RESPONSIVE
+======================================================= */
+@media(max-width:900px){
+    .contenedor {
+        grid-template-columns:1fr;
+    }
+    .card.half { grid-column:1 / span 1; }
+    canvas { min-height:300px; }
+}

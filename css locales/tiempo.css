@@ -1,0 +1,182 @@
+/* =======================================================
+   🎨 TEMA BEIGE MODERNO PROFESIONAL
+======================================================= */
+:root {
+    --bg:#F8F5E6;
+    --text:#2E2E2E;
+    --title:#51613A;
+    --card:#FFFFFF;
+    --shadow:rgba(0,0,0,.1);
+}
+
+/* =======================================================
+   📌 ESTRUCTURA GLOBAL
+======================================================= */
+html, body {
+    margin:0;
+    padding:0;
+    height:100%;
+    overflow:hidden;
+}
+
+body {
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Segoe UI", sans-serif;
+    display:flex;
+    flex-direction:column;
+}
+
+/* =======================================================
+   🔝 HEADER
+======================================================= */
+.top-header {
+    background: var(--title);
+    color: #fff;
+    padding: .7rem 1rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.titulo {
+    width: 100%;
+    text-align: center;
+    font-weight:900;
+    font-size:1.5rem;
+}
+
+.controls {
+    margin-left: auto;
+    display:flex;
+    gap:.45rem;
+}
+
+.select-mes {
+    border:2px solid #ffffff;
+    background:white;
+    color:var(--title);
+    padding:.35rem .6rem;
+    font-size:.75rem;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.btn-regresar {
+    padding:6px 18px;
+    border-radius:6px;
+    border:none;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+/* =======================================================
+   📊 CONTENEDOR PRINCIPAL
+======================================================= */
+.contenedor {
+    display:grid;
+    grid-template-columns:repeat(12, 1fr);
+    gap:.55rem;
+    padding:.45rem;
+    height:calc(100vh - 120px);
+    min-height:0;
+}
+
+/* =======================================================
+   🧱 TARJETAS
+======================================================= */
+.card {
+    background:var(--card);
+    border-radius:10px;
+    padding:.55rem .4rem;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+    box-shadow:0 2px 6px var(--shadow);
+
+    /* 🔥 Clave para datalabels */
+    overflow:visible !important;
+}
+
+.card.full { grid-column:1 / span 12; }
+.card.half { grid-column:span 6; }
+
+h2 {
+    margin:0 0 .3rem 0;
+    font-size:.9rem;
+    text-align:center;
+    color:var(--title);
+    font-weight:900;
+}
+
+/* =======================================================
+   📈 CANVAS (CHART.JS)
+======================================================= */
+canvas {
+    flex:1;
+    width:100% !important;
+    height:100% !important;
+
+    /* Espacio para etiquetas inferiores */
+    padding-bottom:28px !important;
+    margin-bottom:6px;
+}
+
+/* =======================================================
+   🔢 TOTALES
+======================================================= */
+.total {
+    font-weight:bold;
+    text-align:center;
+    font-size:.74rem;
+    color:var(--title);
+}
+
+/* =======================================================
+   📌 DATALABELS
+======================================================= */
+.chartjs-datalabels {
+    text-shadow:1px 1px 3px #ffffff;
+}
+
+/* =======================================================
+   ❌ ERRORES
+======================================================= */
+.error-box {
+    background:#b00000;
+    color:white;
+    padding:.4rem;
+    font-size:.78rem;
+    font-weight:bold;
+    text-align:center;
+    border-radius:5px;
+}
+
+.hidden {
+    display:none;
+}
+
+/* =======================================================
+   📱 RESPONSIVE
+======================================================= */
+@media (max-width:900px) {
+
+    html, body {
+        overflow-y:auto;
+    }
+
+    .contenedor {
+        grid-template-columns:1fr;
+        gap:.6rem;
+        height:auto;
+    }
+
+    .card {
+        height:300px;
+    }
+
+    .card.half {
+        grid-column:1 / span 1;
+    }
+}
