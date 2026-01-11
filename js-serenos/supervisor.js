@@ -1,6 +1,18 @@
 // =====================================
 //  CONFIG INICIAL
 // =====================================
+// =====================================
+//  MAPA - VARIABLES
+// =====================================
+let mapScans = null;
+let mapLayer = null;
+let mapInitialized = false;
+
+let mapSupervisor = "";
+let mapTipoTiempo = "";
+let mapMonth = "";
+let mapDay = "";
+
 Chart.register(ChartDataLabels);
 
 let rawData = [];
@@ -31,6 +43,62 @@ window.addEventListener("DOMContentLoaded", () => {
             buildCharts();
         });
     }
+        // ===== MAPA CONTROLES =====
+    const mapSupSel  = document.getElementById("mapSupervisorSelect");
+    const mapTipoSel = document.getElementById("mapTipoTiempo");
+    const mapMesBox  = document.getElementById("mapMesBox");
+    const mapDiaBox  = document.getElementById("mapDiaBox");
+    const mapMesSel  = document.getElementById("mapMesSelect");
+    const mapDiaInp  = document.getElementById("mapDiaInput");
+
+    if (mapSupSel) {
+        mapSupSel.addEventListener("change", () => {
+            mapSupervisor = mapSupSel.value;
+            resetMapFilters();
+            loadMapMonthSelect(rawData);
+        });
+    }
+
+    if (mapTipoSel) {
+        mapTipoSel.addEventListener("change", () => {
+            mapTipoTiempo = mapTipoSel.value;
+
+            mapMesBox.style.display = "none";
+            mapDiaBox.style.display = "none";
+            mapMonth = "";
+            mapDay = "";
+
+            if (mapTipoTiempo === "MES") {
+                mapMesBox.style.display = "block";
+                loadMapMonthSelect(rawData); // ✅ CLAVE
+            }
+
+            if (mapTipoTiempo === "DIA") {
+                mapDiaBox.style.display = "block";
+            }
+
+            clearMap();
+        });
+    }
+
+
+    if (mapMesSel) {
+        mapMesSel.addEventListener("change", () => {
+            mapMonth = mapMesSel.value;
+            drawScanMap();
+        });
+    }
+
+    if (mapDiaInp) {
+        mapDiaInp.addEventListener("change", () => {
+            mapDay = mapDiaInp.value; // yyyy-mm-dd
+            drawScanMap();
+        });
+    }
+
+
+
+    
 
     loadExcel();
 });
@@ -49,9 +117,54 @@ function loadExcel() {
             loadMonthSelect(rawData);
             processData(rawData);
             buildCharts();
+            initScanMap();
+            loadMapSupervisorSelect();
         })
         .catch(err => console.error("Error cargando Excel:", err));
 }
+// =====================================
+//  MAPA - SELECT SUPERVISORES
+// =====================================
+function loadMapSupervisorSelect() {
+    const sel = document.getElementById("mapSupervisorSelect");
+    if (!sel) return;
+
+    sel.innerHTML = `<option value="">Seleccione supervisor</option>`;
+
+    supervisors.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.dni;
+        opt.textContent = s.nombre;
+        sel.appendChild(opt);
+    });
+}
+// =====================================
+//  MAPA - CARGAR MESES DESDE EL EXCEL
+// =====================================
+function loadMapMonthSelect(rows) {
+    const sel = document.getElementById("mapMesSelect");
+    if (!sel) return;
+
+    sel.innerHTML = `<option value="">Seleccione mes</option>`;
+    const meses = new Set();
+
+    rows.forEach(r => {
+        if (String(r["Supervisor DNI"]).trim() !== mapSupervisor) return;
+
+        const fechaISO = normalizeDate(r["Fecha"]);
+        if (!fechaISO) return;
+
+        meses.add(fechaISO.split("-")[1]); // ← SOLO "01","02"
+    });
+
+    Array.from(meses).sort().forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m;              // ← "01"
+        opt.textContent = getMonthName(m); // ← "Enero"
+        sel.appendChild(opt);
+    });
+}
+
 
 // =====================================
 //  PROCESAR SEGÚN MES
@@ -176,6 +289,28 @@ function normalizeDate(f) {
     }
 
     return "";
+}// =====================================
+//  MAPA - OBTENER MES DESDE FECHA ISO
+// =====================================
+function getMonthFromISO(fechaISO) {
+    if (!fechaISO) return "";
+    return fechaISO.split("-")[1]; // "01", "02", etc
+}
+function formatDateDDMMYY(iso) {
+    if (!iso) return "-";
+    const [y, m, d] = iso.split("-");
+    return `${d}/${m}/${y.slice(2)}`;
+}
+
+function formatTimeHHMM(t) {
+    if (!t) return "-";
+    if (typeof t === "number") {
+        const totalMinutes = Math.round(t * 24 * 60);
+        const h = String(Math.floor(totalMinutes / 60)).padStart(2, "0");
+        const m = String(totalMinutes % 60).padStart(2, "0");
+        return `${h}:${m}`;
+    }
+    return String(t).slice(0,5);
 }
 
 // =====================================
@@ -501,8 +636,182 @@ function loadSupervisorSelect() {
 }
 
 // =====================================
-//  EXPORTAR
+//  MAPA - INICIALIZAR LEAFLET
 // =====================================
+function initScanMap() {
+    if (mapInitialized) return;
+
+    mapScans = L.map("mapScaneos").setView([-12.10, -77.03], 13);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap"
+    }).addTo(mapScans);
+
+    mapLayer = L.layerGroup().addTo(mapScans);
+    mapInitialized = true;
+}
+// =====================================
+//  MAPA - RESETEAR FILTROS
+// =====================================
+function resetMapFilters() {
+    mapMonth = "";
+    mapDay = "";
+
+    const selMes = document.getElementById("mapMesSelect");
+    const inpDia = document.getElementById("mapDiaInput");
+
+    if (selMes) selMes.value = "";
+    if (inpDia) inpDia.value = "";
+
+    clearMap();
+}
+
+// =====================================
+//  MAPA - DIBUJAR ESCANEOS (CUADRADITOS)
+// =====================================
+function drawScanMap() {
+
+    if (!mapSupervisor) return;
+    if (!mapMonth && !mapDay) return;
+
+    mapLayer.clearLayers();
+
+    const puntos = [];
+    const sectorCount = {
+        "Sector 01": 0,
+        "Sector 02": 0,
+        "Sector 03": 0,
+        "Sector 04": 0,
+        "Sector 05": 0,
+        "FZ": 0
+    };
+
+    rawData.forEach(r => {
+
+        if (String(r["Supervisor DNI"]).trim() !== mapSupervisor) return;
+
+        const fecha = normalizeDate(r["Fecha"]);
+        if (!fecha) return;
+
+        if (mapMonth && fecha.split("-")[1] !== mapMonth) return;
+        if (mapDay && fecha !== mapDay) return;
+
+        const lat = parseFloat(r["Lat"]);
+        const lng = parseFloat(r["Lng"]);
+        if (!lat || !lng) return;
+
+        const sector = normalizeSector(r["sector"]);
+        sectorCount[sector] = (sectorCount[sector] || 0) + 1;
+
+        puntos.push({ lat, lng });
+
+        const icon = L.divIcon({
+            className: "",
+            html: `<div class="square-dot"></div>`,
+            iconSize: [8, 8],
+            iconAnchor: [4, 4]
+        });
+
+        L.marker([lat, lng], { icon })
+            .bindPopup(`
+                <b>${r["Nombre"] || "Sin nombre"}</b><br>
+                Sector: ${sector}<br>
+                Fecha: ${formatDateDDMMYY(fecha)}<br>
+                Hora: ${formatTimeHHMM(r["Hora"])}
+            `)
+            .addTo(mapLayer);
+    });
+
+    // ===============================
+    // 🔴 DETECTAR AGLOMERACIONES
+    // ===============================
+    const usados = new Set();
+    const distancia = 0.00035; // ≈ 35m
+
+    puntos.forEach((p, i) => {
+        if (usados.has(i)) return;
+
+        const grupo = [p];
+
+        puntos.forEach((q, j) => {
+            if (i !== j && !usados.has(j)) {
+                const d = Math.hypot(p.lat - q.lat, p.lng - q.lng);
+                if (d < distancia) {
+                    grupo.push(q);
+                    usados.add(j);
+                }
+            }
+        });
+
+        if (grupo.length >= 3) {
+            const latAvg = grupo.reduce((s, x) => s + x.lat, 0) / grupo.length;
+            const lngAvg = grupo.reduce((s, x) => s + x.lng, 0) / grupo.length;
+
+            L.circle([latAvg, lngAvg], {
+                radius: 40,
+                color: "red",
+                weight: 2,
+                fillColor: "#ff0000",
+                fillOpacity: 0.15
+            }).addTo(mapLayer);
+
+            // Desplazamiento de la etiqueta (ajustable)
+            const offsetLat = 0.00025;
+            const offsetLng = 0.00025;
+
+            L.marker([latAvg + offsetLat, lngAvg + offsetLng], {
+                icon: L.divIcon({
+                    className: "",
+                    html: `
+                    <div style="
+                        width: 28px;
+                        height: 28px;
+                        background: #e00000;
+                        color: #ffffff;
+                        font-size: 18px;
+                        font-weight: 900;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 2px 6px rgba(0,0,0,.45);
+                        border: 2px solid #ffffff;
+                    ">
+                        ${grupo.length}
+                    </div>
+                    `
+                }),
+                interactive: false
+            }).addTo(mapLayer);
+
+
+        }
+    });
+
+    // ===============================
+    // 📊 ACTUALIZAR INFO BOX
+    // ===============================
+    const info = document.getElementById("mapInfoBox");
+    if (info) {
+        info.innerHTML = `
+            <b>Total:</b> ${puntos.length}<br>
+            Sector 01: ${sectorCount["Sector 01"]}<br>
+            Sector 02: ${sectorCount["Sector 02"]}<br>
+            Sector 03: ${sectorCount["Sector 03"]}<br>
+            Sector 04: ${sectorCount["Sector 04"]}<br>
+            Sector 05: ${sectorCount["Sector 05"]}<br>
+            FZ: ${sectorCount["FZ"]}
+        `;
+    }
+
+    if (puntos.length) {
+        mapScans.fitBounds(puntos.map(p => [p.lat, p.lng]), {
+            padding: [40, 40]
+        });
+    }
+}
+
+
 // =====================================
 //  EXPORTAR - PNG & PDF SIN CORTES + LOADING
 // =====================================
